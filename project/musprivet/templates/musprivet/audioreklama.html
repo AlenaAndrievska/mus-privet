@@ -1,0 +1,36 @@
+{% extends 'musprivet/base.html' %}
+
+{% load static %}
+
+{% block title%}Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.{% endblock %}
+
+{% block content %}
+
+ <section class="audioreklama">
+      <div class="container">
+        <h1 class="main__title audioreklama__title">Услуги для бизнеса:</h1>
+        <ul class="list-reset audioreklama__list row">
+          <li class="audioreklama__list-item col-12 col-lg-6 order-lg-1">
+            <h2 class="audioreklama__list-item-title">Радиоролики информационные, игровые, музыкальные</h2>
+            <p class="audioreklama__list-item-descr">Под ключ с адаптацией в любой хронометраж за 5 дней!</p>
+            <a class="audioreklama__list-item-link" href="reklamnyj-rolik">Заказать</a>
+          </li>
+          <li class="audioreklama__list-item col-12 col-lg-6 order-lg-2">
+            <img class="audioreklama__img" src="{% static 'img/audioreklama1.png' %}" alt="audioreklama1">
+          </li>
+          <li class="audioreklama__list-item col-12 col-lg-6 order-lg-4">
+            <h2 class="audioreklama__list-item-title">Гимн, фирменная мелодия
+              и джингл</h2>
+            <p class="audioreklama__list-item-descr">За 5 дней под ключ</p>
+            <a class="audioreklama__list-item-link" href="#">Заказать</a>
+          </li>
+          <li class="audioreklama__list-item col-12 col-lg-6 order-lg-3">
+            <img class="audioreklama__img" src="{% static 'img/audioreklama2.png' %}" alt="audioreklama2">
+          </li>
+        </ul>
+      </div>
+ </section>
+
+    {% include "musprivet/social_links.html" %}
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'musprivet/base.html' %}
+
+{% block title%}Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.{% endblock %}
+
+{% block content %}
+
+    {% include "musprivet/give_song.html" %}
+
+     <section class="examples">
+      <div class="container examples__container">
+          {% if video_songs %}
+              {% for video_song in video_songs %}
+                <h2 class="examples__title">
+                    {{ video_song.title }}
+                </h2>
+                <p class="examples__2text">
+                    {{ video_song.description }}
+                </p>
+                  <!--<div class="thumb-wrap examples__video_vertical">
+                    <iframe src="{{ video_song.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                  </div>-->
+                  <video class="examples__video examples__video_vertical" playsinline controls = "true" preload="metadata"
+                        poster="video/podari-pesnu_video3-1.png">
+                    <source src="video/podari-pesnu_video3.webm" type="video/WebM">
+                    <source src="video/podari-pesnu_video3.mp4" type="video/mp4">
+                    <p>Ваш браузер не поддерживает встроенные видео.</p>
+                  </video>
+                  {% if video_song.id == 1 %}
+                    <p class="examples__1text">
+                        Хотите подарить любимому человеку такие&nbsp;же эмоции? Мы&nbsp;ждём вашу заявку в&nbsp;любое время!
+                    </p>
+                  {% endif %}
+                  <a class="podaripesnu__link podaripesnu__link_1" href="#present-song">Подарить песню</a>
+              {% endfor %}
+          {% endif %}
+      </div>
+      <div class="container">
+        <p class="examples__1text">Хотите удивить любимого человека? Подарите ему песню!</p>
+          {% if songs %}
+              <ul class="list-reset examples__list">
+                {% for song in songs %}
+                    <li class="examples__list-item">
+                     <p class="examples__descr">
+                        {{ song.description }}
+                     </p>
+                     <h4 class="examples__list-item-title">
+                         {{ song.title }}
+                     </h4>
+                     <div class="examples__audio-container flex">
+                         <div class="examples__audio-album">
+                             <!--Тут нужно добавить тег img для добавления картинки для песни-->
+                         </div>
+                         <audio controls="controls" class="examples__audio custom-audio" preload="metadata"
+                            controlslist="nodownload" autostart="false" src="{{ song.audio_file.url }}"></audio>
+                     </div>
+                    </li>
+                {% endfor %}
+              </ul>
+          {% endif %}
+      </div>
+    </section>
+
+    {% include "musprivet/song_form.html" %}
+    {% include "musprivet/social_links.html" %}
+
+{% endblock %}

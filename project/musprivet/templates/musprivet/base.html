@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.{% endblock %}</title>
+    <meta name="description"
+        content="Выберите готовое музыкальное поздравление в подарок любимым. Пришлем понравившийся аудио привет в формате мр3 на Вашу электронную почту. Поздравите лично со 100% гарантией!">
+    <meta name="keywords"
+        content="Музыкальные поздравления Досрекоб Музыкальное поздравление с днём рождения Акдио привет Аудиопривет поздравление с днём Аудио привет поздравление с днём Аудио привет с днём рождения Аудио привет поздравление Музпривет Муз привет">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.svg' %}" >
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap4.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/media.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}" defer></script>
+</head>
+<body class="body">
+<a href="#top" id="back-to-top" class="back-to-top" title="Back to top"></a>
+<header class="header">
+        {% include "musprivet/header.html" %}
+</header>
+
+<main>
+
+    {% block content %}{% endblock %}
+
+</main>
+
+<footer class="footer">
+        {% include "musprivet/footer.html" %}
+</footer>
+
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% load static %}
+
+   <section class="blog">
+      <div class="container">
+        <h2 class="blog__title">Блог</h2>
+        <p class="blog__descr">
+          В&nbsp;микроблоге мы&nbsp;рассказываем интересные истории из&nbsp;мира музыки, делимся впечатлениями от&nbsp;музыкальных новинок и&nbsp;вспоминаем шлягеры разных лет.
+        </p>
+          {% if articles %}
+              <!--<ul id="slider" class="owl-carousel owl-theme list-reset blog__list flex">-->
+            <ul id="slider" class="owl-carousel owl-theme list-reset blog__list flex">
+                {% for article in articles %}
+                    <li class="blog__list-item">
+                    <div class="blog__item flex flex-column">
+                        <span class="blog__item-data">{{ article.date_field }}</span>
+                        <h3 class="blog__item-title">{{ article.title }}</h3>
+                        <img class="blog__item-img" src="{{ article.image_field.url }}" alt="blog">
+                        <p class="blog__item-descr">
+                            {{ article.text }}
+                        </p>
+                    </div>
+                    </li>
+                {% endfor %}
+            </ul>
+          {% endif %}
+      </div>
+    </section>

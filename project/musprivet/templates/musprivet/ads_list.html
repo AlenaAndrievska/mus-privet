@@ -1,0 +1,134 @@
+{% extends 'musprivet/base.html' %}
+
+{% load custom_filters %}
+
+{% block title%}Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.{% endblock %}
+
+{% block content %}
+
+    {% if subcategory_slug == 'reklamnyj-rolik' %}
+
+        {% include "musprivet/reklamnyrolik_hero.html" %}
+
+    {% elif subcategory_slug == 'reklamnaya-muzyka' %}
+
+        {% include "musprivet/reklamayamuzyka_hero.html" %}
+
+    {% endif %}
+
+ <section class="audioprimery">
+      <div class="container">
+        <h2 class="main__title audioprimery__title">Аудиопримеры</h2>
+        <p class="audioprimery__descr">Прослушайте наши работы.</p>
+        <!-- КНОПКИ ВЫБОРА ВКЛАДКИ  -->
+        {% if tags %}
+            <ul class=" tab list-reset flex audioprimery__list1 flex-wrap">
+                {% for tag in tags %}
+                    <li class="audioprimery__list1-item">
+                        <button id="{% if tag.number == 1 %}defaultOpen{% endif %}" onclick="openCity(event, '{{ tag.slug }}')"
+                        class="tablinks audioprimery__list1-link audioprimery__list1-link_{{ tag.number }}">{{ tag.name }}</button>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+      {% if ads %}
+          {% for tag in tags %}
+            <ul id="{{ tag.slug }}" class="tabcontent list-reset audioreklama__list2 row">
+                {% for ad in ads %}
+                    {% if ad.tag == tag %}
+                        <li class="col-12 col-md-6 col-lg-4">
+                            <div>
+                                <h3 class="audioreklama__list2-title audioreklama__list2-title_note">{{ ad.title }}</h3>
+                                <p class="audioreklama__list2-descr"><strong>Задача:</strong>{{ ad.description }}</p>
+                            </div>
+                            <audio class="audioprimery__audio" preload="metadata" controls="controls"
+                                    controlslist="nodownload" autostart="false">
+                                <source src="{{ ad.audio_file.url }}" type="audio/mp3">
+                            </audio>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% for video_ad in video_ads %}
+                {% if video_ad.tag == tag %}
+                <li class="col-12">
+                    <div class="audioreklama-video">
+                        <div class="row">
+                            <div class="col-12 col-xl-5 align-self-center">
+                                <h3 class="audioreklama-video__title">
+                                    {{ video_ad.title }}
+                                </h3>
+                                {% if video_ad.tag.subcategory.slug == 'reklamnyj-rolik' %}
+                                    {% if video_ad.tag.slug == 'muzykalnye-roliki' %}
+                                        <div class="audioreklama-video__descr1 audioreklama-video__descr1_star">
+                                            {% for line in video_ad.description|split_lines %}
+                                                <p>
+                                                    {{ line }}
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <div class="audioreklama-video__descr1">
+                                            {% for line in video_ad.description|split_lines %}
+                                                <p>
+                                                    {{ line }}
+                                                </p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <p class="audioreklama-video__descr2">Обращайтесь! Акционеры оценят вашу работу.</p>
+                                {% elif video_ad.tag.subcategory.slug == 'reklamnaya-muzyka' %}
+                                    <div class="audioreklama-video__descr1 audioreklama-video__descr1__checkmark">
+                                      {% for line in video_ad.description|split_lines %}
+                                            <p>
+                                                {{ line }}
+                                            </p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12 col-xl-7 align-self-center">
+                                <video class="audioreklama-video-container" preload="metadata" poster="video/add-videoandmusic/sheff-cooker.png" controls>
+                                    <source src="video/add-videoandmusic/sheff-cooker.webm" type="video/WebM">
+                                    <source src="video/add-videoandmusic/sheff-cooker.mp4" type="video/mp4">
+                                    <p>Ваш браузер не поддерживает встроенные видео.</p>
+                                </video>
+                                <!--<div class="thumb-wrap">
+                                    <iframe src="{{ video_ad.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+          {% endfor %}
+      {% endif %}
+      </div>
+ </section>
+
+        {% if subcategory_slug == 'reklamnyj-rolik' %}
+
+                {% include "musprivet/reklamnyrolik_static.html" %}
+                {% include "musprivet/reklamnyrolik_price.html" %}
+                {% include "musprivet/reklamnyrolik_form.html" %}
+
+        {% elif subcategory_slug == 'reklamnaya-muzyka' %}
+
+                {% include "musprivet/reklamnayamuzyka_static.html" %}
+                {% include "musprivet/reklamnayamuzyka_price.html" %}
+                {% include "musprivet/reklamnayamuzyka_form.html" %}
+
+        {% endif %}
+
+    {% include "musprivet/reklamnyrolik_review_list.html" %}
+    {% if subcategory_slug == 'reklamnyj-rolik' %}
+            {% include "musprivet/reklamnyrolik_other_services.html" %}
+    {% elif subcategory_slug == 'reklamnaya-muzyka' %}
+            {% include "musprivet/reklamnayamuzyka_other_services.html" %}
+    {% endif %}
+    {% include "musprivet/social_links.html" %}
+
+
+{% endblock %}

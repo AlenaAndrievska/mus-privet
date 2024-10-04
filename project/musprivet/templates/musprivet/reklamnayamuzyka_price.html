@@ -1,0 +1,41 @@
+{% load static %}
+{% load custom_filters %}
+
+    <section class="price">
+      <div class="container">
+          {% if music_prices %}
+              <h2 class="price__title">
+                Цены
+              </h2>
+              <ul class="list-reset justify-content-center price__main-list row">
+                {% for price in music_prices %}
+                    <li class="col-12 col-md-6 col-lg-4 flex">
+                        <div class="price-container flex flex-column justify-content-between">
+                            <div>
+                                <p class="price__type">
+                                    {{ price.title }}
+                                </p>
+                                   <p class="price__minimum">
+                                       <sub>от</sub> {{ price.price }} ₽
+                                   </p>
+                                    <p class="price__chrono">
+                                        <br>
+                                    </p>
+                                    <ul class="list-reset price__list">
+                                        {% for line in price.description|split_lines %}
+                                            <li class="price__details">
+                                                {{ line }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            <div class="price__link-container">
+                                <a class="price__link" href="#make-order">Заказать</a>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+              </ul>
+          {% endif %}
+      </div>
+    </section>

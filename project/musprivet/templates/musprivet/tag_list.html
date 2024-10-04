@@ -1,0 +1,15 @@
+{% load static %}
+
+        <h2 class="main__title ready-variants__main-title">Готовые аудиопоздравления и песни в подарок от Музпривет!</h2>
+          {% if tags %}
+            <ul class="list-reset ready-variants__list flex">
+                {% for tag in tags %}
+                        <li class="ready-variants__list-item">
+                            <a class="ready-variants__link  ready-variants__link_active ready-variants__link_siren" href="/mus-pozdrav/{{ tag.slug }}">
+                                {{ tag.name }}
+                            </a>
+                        </li>
+                {% endfor %}
+            </ul>
+          {% endif %}
+

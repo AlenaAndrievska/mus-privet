@@ -1,0 +1,55 @@
+{% load static %}
+
+<section id="make-order" class="make-order">
+      <div class="container">
+        <ul class="list-reset row">
+          <li class="make-order__item col-12 col-lg-4">
+            <h2 class="make-order__main-title">
+              Гимн, фирменная мелодия и&nbsp;джингл за&nbsp;5&nbsp;дней под ключ
+            </h2>
+            <p class="make-order__descr">Гарантия <br>
+              качества</p>
+          </li>
+          <li class="make-order__item col-12 col-lg-8">
+            <div class="make-order__form-container">
+              <h3 class="make-order__form-title">
+                Заказать гимн, фирменную мелодию или джингл
+              </h3>
+              <form class="make-order__form" action="{{ subcategory_slug }}" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                <ul class="list-reset row make-order__form-list">
+                  <li class="col-12 col-lg-6 flex flex-column">
+                    <label class="make-order__form-label" for="make-order__form-name">Ваше имя*</label>
+                    <input class="make-order__form-input" name="name" id="make-order__form-name" type="text" placeholder="Ваше имя">
+                  </li>
+                  <li class="col-12 col-lg-6 flex flex-column">
+                    <label class="make-order__form-label" for="make-order__form-email">E-mail*</label>
+                    <input class="make-order__form-input" name="email" id="make-order__form-email" type="email" placeholder="E-mail">
+                  </li>
+                  <li class="col-12 col-lg-6 flex flex-column">
+                    <label class="make-order__form-label" for="make-order__form-tel">Телефон*</label>
+                    <input class="make-order__form-input" name="phone" id="make-order__form-tel" type="tel" placeholder="Телефон">
+                  </li>
+                  <li class="col-12 col-lg-6 flex flex-column">
+                    <label class="make-order__form-label" for="make-order__form-option">Услуга</label>
+                    <select class="make-order__form-select" name="service" id="make-order__form-option">
+                        {% for service in music_prices %}
+                            <option selected value="{{ service.id }}">{{ service.title }}</option>
+                        {% endfor %}
+                    </select>
+                  </li>
+                  <li class="col-12 flex flex-column">
+                    <label class="make-order__form-label" for="make-order__form-file">Загрузить файл</label>
+                    <input class="make-order__form-input" name="audio_file" id="make-order__form-file" type="file">
+                  </li>
+                </ul>
+                <button type="submit" class="btn make-order__form-link">Заказать</button>
+                <p class="make-order__form__required">
+                  (*) Обязательно
+                </p>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+</section>

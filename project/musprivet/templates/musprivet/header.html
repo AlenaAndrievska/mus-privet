@@ -1,0 +1,56 @@
+{% load static %}
+
+    <div class="container header__container flex align-items-center">
+
+      <!-- ТУТ БУРГЕР МЕНЮ -->
+      <div class="menu">
+        <input type="checkbox" id="burger-checkbox" class="burger-checkbox">
+        <label for="burger-checkbox" class="burger"></label>
+          <ul class="menu-list list-reset">
+            {% if categories %}
+                {% for category in categories %}
+                    <li>
+                        <a href="/{{ category.slug }}" class="menu-item menu-item_active">{{ category.name }}</a>
+                    </li>
+                    {% if category.subcategory.all.count > 0 %}
+                        <li>
+                            <a href="/{{ category.slug }}/{{ subcategory.slug }}" class="menu-item menu-item_active">{{ subcategory.name }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+          <li>
+            <a class="menu-item header__btn-link_burger" href="https://t.me/muzprivet">Muzprivet</a>
+          </li>
+        </ul>
+      </div>
+      <a class="header__logo" href="/mus-pozdrav/"><img class="header__logo-img" src="{% static 'img/mainicon.png' %}" alt="icon"></a>
+      <nav class="nav">
+        {% if categories %}
+          <ul class="list-reset nav__list flex">
+            {% for category in categories %}
+              {% if category.subcategory.all.count > 0 %}
+                  <li style="position: relative;">
+                    <a class="nav__link nav__link_2level" href="/{{ category.slug }}">{{ category.name }}</a>
+                    <ul class="list-reset nav__list-2level hidden">
+                        {% for subcategory in category.subcategory.all %}
+                            <li>
+                                <a class="nav__link_3level" href="/{{ category.slug }}/{{ subcategory.slug }}">{{ subcategory.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                  </li>
+                {% else %}
+                    <li>
+                        <a class="nav__link nav__link" href="/{{ category.slug }}">{{ category.name }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+              <li>
+                  <a class="nav__link" href='/about-us/'>О&nbsp;нас</a>
+              </li>
+            </ul>
+      </nav>
+      <a class="header__btn-link header__btn-link_hidden" href="https://t.me/muzprivet">Muzprivet</a>
+    </div>

@@ -1,0 +1,72 @@
+{% load static %}
+
+<div class="container footer__container row">
+      <div class="footer__left col-12 col-lg-3">
+        <a class="footer__logo" href="/mus-pozdrav/">
+          <img class="footer__img" src="{% static 'img/mainicon.png' %}" alt="mainicon">
+        </a>
+        <ul class="list-reset">
+          <li class="footer__city footer__list-item">Москва</li>
+          <li class="footer__city footer__list-item">Санкт-Петербург</li>
+        </ul>
+      </div>
+      <div class="footer__middle col-12 col-lg-9 flex">
+        <div>
+          <h3 class="footer__title">
+            Меню сайта
+          </h3>
+          {% if categories %}
+            <ul class="list-reset footer__list">
+                {% for category in categories %}
+                    <li class="footer__list-item">
+                        {% if category.subcategory.all.count > 0 %}
+                            <a class="footer__link footer__link_level2" href="/{{ category.slug }}">
+                                {{ category.name }}
+                            </a>
+                            <ul class="list-reset footer__list_level2">
+                                {% for subcategory in category.subcategory.all %}
+                                    <li class="footer__list-item">
+                                        <a class="footer__link" href="/{{ category.slug }}/{{ subcategory.slug }}">
+                                            {{ subcategory.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <a class="footer__link" href="/{{ category.slug }}">
+                                {{ category.name }}
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            {% endif %}
+                    <li class="footer__list-item">
+                        <a class="footer__link" href="/about-us/">О нас</a>
+                    </li>
+            </ul>
+        </div>
+
+        <div>
+          <h3 class="footer__title">
+            Правовая информация
+          </h3>
+          <ul class="list-reset">
+            <li class="footer__list-item">
+              <a class="footer__link" href="/user-manual/">
+                Пользовательское соглашение
+              </a>
+            </li>
+            <li class="footer__list-item">
+              <a class="footer__link" href="/refund/">
+                Способы оплаты и правила возврата денежных средств
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__copyrigth">
+      <div class="container">
+        Все права защищены. ©2024
+      </div>
+    </div>

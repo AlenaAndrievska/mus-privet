@@ -1,0 +1,19 @@
+{% load static %}
+
+    {% if grouped_names %}
+    <h3 class="ready-variants__second-title">Имена по алфавиту</h3>
+        <ul class="list-reset abc-list flex flex-column">
+            {% for letter, names in grouped_names.items %}
+                <li class="abc-item">
+                    <p class="abc-title">{{ letter }}</p>
+                    <ul class="list-reset name-list">
+                        {% for name in names %}
+                            <li class="name-item">
+                                <a class="name-link" href="{{ current_tag.slug }}/name/{{ name.slug }}">{{ name.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}

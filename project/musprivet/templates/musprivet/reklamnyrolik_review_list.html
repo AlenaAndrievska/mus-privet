@@ -1,0 +1,23 @@
+{% load static %}
+
+
+ <section class="revs">
+      <div class="container">
+        <h2 class="main__title revs__main-title">Отзывы</h2>
+          {% if reviews %}
+            <ul class="list-reset row revs__list justify-content-center">
+                {% for review in reviews %}
+                    <li class="col-12 col-md-6 col-lg-4 flex">
+                        <div class="revs__container">
+                            <h3 class="revs__title">{{ review.name }}</h3>
+                            <p class="revs__descr">
+                                {{ review.text }}
+                            </p>
+                            <span class="revs__rating"></span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+          {% endif %}
+      </div>
+ </section>

@@ -1,0 +1,69 @@
+{% load static %}
+
+<section id="present-song" class="present-song">
+      <div class="container">
+        <div class="row present-song__container">
+          <div class="col-12 col-xl-6">
+            <h3 class="present-song__title">Как оформить заявку на песню в подарок</h3>
+            <p class="present-song__descr">
+              1. Заполните обязательные поля (имя, телефон, e-mail).
+            </p>
+            <p class="present-song__descr">
+              2. В тексте письма напишите, что обязательно должно быть в песне. Посмотрите примеры.
+            </p>
+            <p class="present-song__descr">
+              Заказчица Эля написала:
+            </p>
+            <p class="present-song__descr">
+              - Муж Сергей, познакомились в Ялте, он с Казахстана, я из Сибири. Две дочки - Яна и Сабина. Очень много
+              работает, старается для нас. Любим его сильно.
+            </p>
+            <p class="present-song__descr">
+              Заказчик Сергей написал:
+            </p>
+            <p class="present-song__descr">
+              - Жена Наталья (только так, а не Наташа. Можно еще любимая). Трое детей. Старшая дочь - модель. Сын -
+              чемпион края по самбо. Младшая дочка - наша звездочка. У жены свой салон красоты. Все время развивается,
+              занимается изучением себя и совершенствуется. Написать песню так, чтобы взяло за душу.
+            </p>
+            <p class="present-song__descr">
+              3. Уже через 24 часа после получения заявки мы пришлем Вам бесплатно 1 минуту Вашей песни в нескольких
+              музыкальных стилях.
+            </p>
+            <p class="present-song__descr">
+              4. Выбираете самый лучший, оплачиваете, и получаете на Ваш e-mail или в мессенджер всю песню в формате
+              mp3.
+            </p>
+          </div>
+          <div class="col-12 col-xl-6 flex align-items-center">
+            <div class="present-song__form-container flex">
+              <form class="present-song__form" action="/podarit-pesnu/" method="post">
+                  {% csrf_token %}
+                <div class="flex present-song__input1">
+                  <div class="flex flex-column">
+                    <label for="form__text">Ваше имя*</label>
+                    <input id="form__text" type="text" name="name" placeholder="Ваше имя" required>
+                  </div>
+                  <div class="flex flex-column">
+                    <label for="form__tel">Ваш телефон*</label>
+                    <input id="form__tel" type="tel" name="phone" placeholder="Ваш телефон" required>
+                  </div>
+                </div>
+                <div class="flex flex-column">
+                  <label for="form__email">Ваш Email*</label>
+                  <input id="form__email" type="email" name="email" placeholder="Ваш Email" required>
+                </div>
+                <div class="flex flex-column">
+                  <label for="form__message">Текст письма*</label>
+                  <textarea name="message" id="form__message" placeholder="Текст письма" required></textarea>
+                </div>
+                <button type="submit" class="btn present-song__btn">Отправить сообщение</button>
+                <p class="present-song__disclaimer">
+                  (*) Обязательно
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>

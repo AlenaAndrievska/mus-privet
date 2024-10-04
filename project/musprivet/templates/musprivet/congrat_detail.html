@@ -1,0 +1,67 @@
+{% extends 'musprivet/base.html' %}
+{% load custom_filters %}
+
+{% block title%}Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+      <section class="zakaz">
+        <!-- Внезапно выпадающее окошко сбоку  -->
+        <div id="side-message" class="side-message">
+            <p class="side-message__descr">
+                Евгений из Симферополя только что отправил поздравление жене Кристине.
+            </p>
+        </div>
+
+        <h1 class="zakaz__main-title">
+          {{ congrat.title }}
+        </h1>
+
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <audio class="zakaz__audio" preload="metadata" controls="controls"
+              controlslist="nodownload" autostart="false">
+              <source class="zakaz__audio-source" src="{{ congrat.audio_file.url }}" type="audio/mp3">
+            </audio>
+            {% if congrat.description %}
+                <p class="zakaz__text">Текст</p>
+                <ul class="list-reset zakaz__song-list">
+                    {% for paragraph in congrat.description|split_paragraphs %}
+                     <li class="zakaz__song-item">
+                        {% for line in paragraph|split_lines %}
+                            <p class="zakaz__paragraph">{{ line }}</p>
+                        {% endfor %}
+                     </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <h2 class="zakaz__second-title">Отправьте {{ current_tag.name }} этот музпривет!</h2>
+            <p class="zakaz__price">Стоимость музпривета - <b>{{ price.price }} ₽</b></p>
+            <form class="zakaz__form" action="/mus-pozdrav/{{ current_tag.slug }}/{{ congrat.slug }}" method="post">
+            {% csrf_token %}
+              <ul class="list-reset row zakaz__form-list">
+                <li class="col-12 col-md-6 flex flex-column">
+                  <input required class="zakaz__form-input" id="zakaz__form-your-tel" name="phone" type="tel" placeholder="Ваш телефон">
+                </li>
+                <li class="col-12 col-md-6 flex flex-column">
+                  <input required class="zakaz__form-input" id="zakaz__form-mail" name="email" type="email" placeholder="Ваша почта">
+                </li>
+                <li class="col-12">
+                  <input class="zakaz__form-input  zakaz__form-select_checked" id="zakaz__form-add-own-congr"
+                    type="checkbox" name="add_congratulation">
+                  <label tabindex="0" class="zakaz__form-label zakaz__form-label_styled" for="zakaz__form-add-own-congr">Добавить личное поздравление:</label>
+                  <textarea class="zakaz__form-textarea" id="zakaz__form-message" name="congratulation" placeholder="Напишите ваше личное поздравление. Например, Алексей поздравляет любимую жену Валерию. Ваш текст, озвученный голосом, прозвучит сразу&nbsp;же после музпривета."></textarea>
+                </li>
+              </ul>
+              <button type="submit" class="btn zakaz__form-link">Оплатить</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+
+{% endblock %}

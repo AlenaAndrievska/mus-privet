@@ -1,0 +1,39 @@
+{% extends 'musprivet/base.html' %}
+
+{% block title%}Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        {% include "musprivet/hero.html" %}
+    </section>
+    <section id="ready-variants" class="ready-variants">
+      <div class="container">
+
+        {% include "musprivet/tag_list.html" %}
+        {% include "musprivet/name_list.html" %}
+
+        {% if congrats %}
+        <ul class="ready-variants__audio-list list-reset row">
+        {% for congrat in congrats %}
+          <li class="ready-variants__audio-list-item col-12 col-md-6">
+            <h4 class="ready-variants__audio-title">{{ congrat.title }}</h4>
+            <audio ontimeupdate="progressUpdate()" class="ready-variants__audio" preload="metadata" controls="controls"
+              controlslist="nodownload" autostart="false">
+              <source src="{{ congrat.audio_file.url }}" type="audio/mp3">
+            </audio>
+            <a class="ready-variants__buy" href="{{ current_tag.slug }}/{{ congrat.slug }}">Хочу отправить</a>
+          </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% include "musprivet/static_elements.html" %}
+        {% include "musprivet/blog_list.html" %}
+        {% include "musprivet/review_list.html" %}
+        {% include "musprivet/social_links.html" %}
+
+      </div>
+    </section>
+
+{% endblock %}
+
