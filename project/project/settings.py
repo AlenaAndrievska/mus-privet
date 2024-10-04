@@ -25,8 +25,11 @@ SECRET_KEY = 'django-insecure-z)_u%t@-n&ta@9+ol0k3l-@)&glpw3r!r^lczzs(z+njo23mc4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['muzprivet.r300.ru', 'localhost', '127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://muzprivet.r300.ru',
+]
 
 # Application definition
 

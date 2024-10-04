@@ -9,6 +9,7 @@ from .views import ServiceCongratsByTagListView, ServiceCongratsByTagDetailView,
 app_name = 'musprivet'
 
 urlpatterns = [
+    path('', ServiceCongratsByTagListView.as_view(queryset=ServiceCongratsByTag.objects.none()), name='congrat_list_default'),
     path('mus-pozdrav/', ServiceCongratsByTagListView.as_view(queryset=ServiceCongratsByTag.objects.none()), name='congrat_list_default'),
     path('mus-pozdrav/<slug:tag_slug>', ServiceCongratsByTagListView.as_view(), name='congrat_list'),
     path('mus-pozdrav/<slug:tag_slug>/<slug:congrat_slug>', ServiceCongratsByTagDetailView.as_view(), name='congrat_detail'),
