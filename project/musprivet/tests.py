@@ -10,7 +10,7 @@ from .models import ServiceCongratsByTag, Tag, Category, Subcategory, Blog, Revi
 class ServiceCongratsByTagListViewTests(TestCase):
 
     def setUp(self):
-        self.category = Category.objects.create(slug='mus-pozdrav')
+        self.category = Category.objects.create(slug='mus-pozdrav', image='file.jpg')
         self.subcategory = Subcategory.objects.create(slug='sub-categor', category=self.category)
         self.tag1 = Tag.objects.create(name='Тестовый тег', slug='test-slug', category=self.category)
         self.tag2 = Tag.objects.create(name='Поздравление жене по имени', slug='pozdravlenie-zhene-po-imeni', category=self.category)
@@ -50,6 +50,19 @@ class ServiceCongratsByTagListViewTests(TestCase):
         self.assertIn('reviews', response.context)
         self.assertIn('grouped_names', response.context)
         self.assertIn('current_tag', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:congrat_list',
+                                                                                    kwargs={'tag_slug': self.tag1.slug})))
+        self.assertEqual(response.context['description'], 'Выберите готовое музыкальное поздравление в подарок любимым. '
+                         + self.category.name + ' ' + self.tag1.name + ' Пришлем понравившийся аудио привет в '
+                                                                       'формате мр3 на Вашу электронную почту. '
+                                                                       'Поздравите лично со 100% гарантией!')
+        self.assertEqual(response.context['image'], 'http://testserver' + str(self.category.image.url))
         self.assertEqual(response.context['current_tag'], self.tag1)
         self.assertQuerysetEqual(response.context['categories'], [self.category])
         self.assertQuerysetEqual(response.context['subcategories'], [self.subcategory])
@@ -67,7 +80,7 @@ class ServiceCongratsByTagListViewTests(TestCase):
 class ServiceCongratsByTagDetailViewTests(TestCase):
 
     def setUp(self):
-        self.category = Category.objects.create(slug='mus-pozdrav')
+        self.category = Category.objects.create(slug='mus-pozdrav', image='file.jpg')
         self.subcategory = Subcategory.objects.create(slug='sub-categor', category=self.category)
         self.tag1 = Tag.objects.create(name='Тестовый тег', slug='test-slug', category=self.category)
         self.congrat = ServiceCongratsByTag.objects.create(category=self.category, tag=self.tag1, slug='congrat_1',
@@ -91,6 +104,20 @@ class ServiceCongratsByTagDetailViewTests(TestCase):
         self.assertIn('categories', response.context)
         self.assertIn('form', response.context)
         self.assertIn('price', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:congrat_detail',
+                                                                                    kwargs={'tag_slug': self.tag1.slug,
+                                                                                            'congrat_slug': self.congrat.slug})))
+        self.assertEqual(response.context['description'], 'Выберите готовое музыкальное поздравление в подарок любимым. '
+                         + self.category.name + ' ' + self.tag1.name + ' ' + self.congrat.title +
+                         ' Пришлем понравившийся аудио привет в формате мр3 на Вашу электронную почту. Поздравите лично ' \
+                                                                          'со 100% гарантией!')
+        self.assertEqual(response.context['image'], 'http://testserver' + str(self.category.image.url))
         self.assertEqual(response.context['current_tag'], self.tag1)
         self.assertQuerysetEqual(response.context['categories'], [self.category])
         self.assertEqual(response.context['price'], self.price)
@@ -149,7 +176,7 @@ class ServiceCongratsByTagDetailViewTests(TestCase):
 class PoemByNameDetailViewTests(TestCase):
 
     def setUp(self):
-        self.category = Category.objects.create(slug='mus-pozdrav')
+        self.category = Category.objects.create(slug='mus-pozdrav', image='file.jpg')
         self.subcategory = Subcategory.objects.create(slug='sub-categor', category=self.category)
         self.tag1 = Tag.objects.create(name='Тестовый тег', slug='test-slug', category=self.category)
         self.name1 = Name.objects.create(name='A', slug='a-name', gender='M')
@@ -192,6 +219,20 @@ class PoemByNameDetailViewTests(TestCase):
         self.assertIn('form', response.context)
         self.assertIn('name_congrats', response.context)
         self.assertIn('price', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:name_poem_detail',
+                                                                                    kwargs={'tag_slug': self.tag1.slug,
+                                                                                            'name_slug': self.name3.slug})))
+        self.assertEqual(response.context['description'], 'Выберите готовое музыкальное поздравление в подарок любимым. ' + \
+                                 self.category.name + ' ' + self.tag1.name + ' ' + self.poem3.title +
+                         ' Пришлем понравившийся аудио привет в формате мр3 на Вашу электронную почту. '
+                         'Поздравите лично со 100% гарантией!')
+        self.assertEqual(response.context['image'], 'http://testserver' + str(self.category.image.url))
         self.assertEqual(response.context['current_tag'], self.tag1)
         self.assertEqual(response.context['price'], self.price)
         self.assertQuerysetEqual(response.context['categories'], [self.category])
@@ -250,7 +291,7 @@ class PoemByNameDetailViewTests(TestCase):
 class ServiceSongsListViewTests(TestCase):
 
     def setUp(self):
-        self.category = Category.objects.create(slug='podarit-pesnu')
+        self.category = Category.objects.create(slug='podarit-pesnu', image='file.jpg')
         self.subcategory = Subcategory.objects.create(slug='sub-categor', category=self.category)
         self.song1 = ServiceSongs.objects.create(category=self.category, title='song1', image_field='file1.png',
                                                             audio_file='file1.mp3')
@@ -272,6 +313,16 @@ class ServiceSongsListViewTests(TestCase):
         self.assertIn('categories', response.context)
         self.assertIn('form', response.context)
         self.assertIn('video_songs', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:song_list')))
+        self.assertEqual(response.context['description'], 'Песня в подарок любимой девушке, парню, '
+                                                          'родителям, мужу, жене. ' + self.category.name + ' 100% шлягеры!')
+        self.assertEqual(response.context['image'], 'http://testserver' + str(self.category.image.url))
         self.assertQuerysetEqual(response.context['categories'], [self.category])
         self.assertQuerysetEqual(response.context['video_songs'], [self.videosong2])
 
@@ -330,7 +381,7 @@ class ServiceSongsListViewTests(TestCase):
 class ServiceAdvertisementListViewTests(TestCase):
 
     def setUp(self):
-        self.category = Category.objects.create(name='Аудиореклама', slug='audioreklama')
+        self.category = Category.objects.create(name='Аудиореклама', slug='audioreklama', image='file.jpg')
         self.subcategory1 = Subcategory.objects.create(name='Рекламный ролик', slug='reklamnyj-rolik', category=self.category)
         self.subcategory2 = Subcategory.objects.create(name='Рекламная музыка', slug='reklamnaya-muzyka', category=self.category)
         self.tag1 = Tag.objects.create(name='Музыкальные ролики', slug='muzykalnye-roliki', category=self.category,
@@ -369,6 +420,18 @@ class ServiceAdvertisementListViewTests(TestCase):
         self.assertIn('music_prices', response.context)
         self.assertIn('reviews', response.context)
         self.assertIn('tags', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:ads_list',
+                                                                                    kwargs={'subcategory_slug':
+                                                                                                self.subcategory1.slug})))
+        self.assertEqual(response.context['description'], 'Услуги для бизнеса: ' + self.category.name + ' ' +
+                         self.subcategory1.name + ' Под ключ с адаптацией в любой хронометраж за 5 дней!')
+        self.assertEqual(response.context['image'], 'http://testserver' + str(self.category.image.url))
         self.assertQuerysetEqual(response.context['categories'], [self.category])
         self.assertQuerysetEqual(response.context['subcategory_slug'], self.subcategory1.slug)
         self.assertQuerysetEqual(response.context['video_ads'], [self.videoad1])
@@ -482,6 +545,146 @@ class ServiceAdvertisementListViewTests(TestCase):
         self.assertIn('phone', form.errors)
         self.assertIn('email', form.errors)
         self.assertIn('service', form.errors)
+
+
+class AdvertisementViewTests(TestCase):
+
+    def setUp(self):
+        self.category = Category.objects.create(name='Аудиореклама', slug='audioreklama', image='file.jpg')
+        self.subcategory1 = Subcategory.objects.create(name='Рекламный ролик', slug='reklamnyj-rolik', category=self.category)
+        self.subcategory2 = Subcategory.objects.create(name='Рекламная музыка', slug='reklamnaya-muzyka', category=self.category)
+
+    def test_detail_view_status_code(self):
+        response = self.client.get(reverse('musprivet:audioreklama'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_detail_view_template_used(self):
+        response = self.client.get(reverse('musprivet:audioreklama'))
+        self.assertTemplateUsed(response, 'musprivet/audioreklama.html')
+
+    def test_detail_view_context(self):
+        response = self.client.get(reverse('musprivet:audioreklama'))
+        self.assertIn('categories', response.context)
+        self.assertIn('subcategories', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:audioreklama')))
+        self.assertEqual(response.context['description'], 'Услуги для бизнеса: ' + self.category.name + ' ' + ' Под ключ с адаптацией в ' \
+                                                                                'любой хронометраж за 5 дней!')
+        self.assertEqual(response.context['image'], 'http://testserver' + str(self.category.image.url))
+        self.assertQuerysetEqual(response.context['categories'], [self.category])
+        self.assertQuerysetEqual(response.context['subcategories'], [self.subcategory1, self.subcategory2],
+                                 ordered=False)
+
+
+class AboutUsViewTests(TestCase):
+
+    def setUp(self):
+        self.category = Category.objects.create(name='Аудиореклама', slug='audioreklama', image='file.jpg')
+        self.subcategory1 = Subcategory.objects.create(name='Рекламный ролик', slug='reklamnyj-rolik',
+                                                       category=self.category)
+        self.subcategory2 = Subcategory.objects.create(name='Рекламная музыка', slug='reklamnaya-muzyka',
+                                                       category=self.category)
+
+    def test_detail_view_status_code(self):
+        response = self.client.get(reverse('musprivet:about_us'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_detail_view_template_used(self):
+        response = self.client.get(reverse('musprivet:about_us'))
+        self.assertTemplateUsed(response, 'musprivet/about_us.html')
+
+    def test_detail_view_context(self):
+        response = self.client.get(reverse('musprivet:about_us'))
+        self.assertIn('categories', response.context)
+        self.assertIn('subcategories', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:about_us')))
+        self.assertEqual(response.context['description'], 'Продюсерский центр «Музпривет» — творческое содружество композиторов, '
+                                 'авторов текстов, исполнителей, актёров, режиссёров и продюсеров, работающих '
+                                 'в сферах рекламы, радио, телевидения и кинематографе.')
+        self.assertEqual(response.context['image'], 'http://testserver/static/img/mainicon.png')
+        self.assertQuerysetEqual(response.context['categories'], [self.category])
+        self.assertQuerysetEqual(response.context['subcategories'], [self.subcategory1, self.subcategory2],
+                                 ordered=False)
+
+
+class UserManualViewTests(TestCase):
+
+    def setUp(self):
+        self.category = Category.objects.create(name='Аудиореклама', slug='audioreklama', image='file.jpg')
+        self.subcategory1 = Subcategory.objects.create(name='Рекламный ролик', slug='reklamnyj-rolik',
+                                                       category=self.category)
+        self.subcategory2 = Subcategory.objects.create(name='Рекламная музыка', slug='reklamnaya-muzyka',
+                                                       category=self.category)
+
+    def test_detail_view_status_code(self):
+        response = self.client.get(reverse('musprivet:user_manual'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_detail_view_template_used(self):
+        response = self.client.get(reverse('musprivet:user_manual'))
+        self.assertTemplateUsed(response, 'musprivet/user_manual.html')
+
+    def test_detail_view_context(self):
+        response = self.client.get(reverse('musprivet:user_manual'))
+        self.assertIn('categories', response.context)
+        self.assertIn('subcategories', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:user_manual')))
+        self.assertEqual(response.context['description'], 'Договор на оказание услуг (публичная оферта)')
+        self.assertEqual(response.context['image'], 'http://testserver/static/img/mainicon.png')
+        self.assertQuerysetEqual(response.context['categories'], [self.category])
+        self.assertQuerysetEqual(response.context['subcategories'], [self.subcategory1, self.subcategory2],
+                                 ordered=False)
+
+class RefundViewTests(TestCase):
+
+    def setUp(self):
+        self.category = Category.objects.create(name='Аудиореклама', slug='audioreklama', image='file.jpg')
+        self.subcategory1 = Subcategory.objects.create(name='Рекламный ролик', slug='reklamnyj-rolik',
+                                                       category=self.category)
+        self.subcategory2 = Subcategory.objects.create(name='Рекламная музыка', slug='reklamnaya-muzyka',
+                                                       category=self.category)
+
+    def test_detail_view_status_code(self):
+        response = self.client.get(reverse('musprivet:refund'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_detail_view_template_used(self):
+        response = self.client.get(reverse('musprivet:refund'))
+        self.assertTemplateUsed(response, 'musprivet/refund.html')
+
+    def test_detail_view_context(self):
+        response = self.client.get(reverse('musprivet:refund'))
+        self.assertIn('categories', response.context)
+        self.assertIn('subcategories', response.context)
+        self.assertIn('title', response.context)
+        self.assertIn('url', response.context)
+        self.assertIn('description', response.context)
+        self.assertIn('image', response.context)
+        self.assertEqual(response.context['title'],
+                         'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.')
+        self.assertEqual(response.context['url'], 'http://testserver' + str(reverse('musprivet:refund')))
+        self.assertEqual(response.context['description'], 'Способы оплаты и правила возврата денежных средств')
+        self.assertEqual(response.context['image'], 'http://testserver/static/img/mainicon.png')
+        self.assertQuerysetEqual(response.context['categories'], [self.category])
+        self.assertQuerysetEqual(response.context['subcategories'], [self.subcategory1, self.subcategory2],
+                                 ordered=False)
 
 
 

@@ -60,6 +60,8 @@
   .make-order__item:not(:last-child) {
     margin-bottom: 30px;
   }
+  .error__title 
+  {font-size: 40px;}
 }
 
 @media (max-width: 768px) {
@@ -404,4 +406,9 @@
   .other-services {
     padding: 30px 0;
   }
+  .error {
+    padding: 40px 0;
+  }
+  .error__title 
+  {font-size: 32px;}
 }

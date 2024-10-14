@@ -1,11 +1,16 @@
+from json import JSONDecodeError
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.templatetags.static import static
 from django.urls import reverse
+import requests
 
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import FormMixin
 
+from project import settings
 from .forms import PaymentForm1, PaymentForm2, SongRequestForm, ServiceAdClipRequestForm, ServiceAdMusicRequestForm
 from .models import Category, Tag, ServiceCongratsByTag, Name, ServiceCongratsByName, PoemByName, Blog, Review, \
     Subcategory, ServiceSongs, ServiceSongsVideo, ServiceVideoAdvertisement, ServiceAdvertisement, ServiceAdClipPrice
@@ -59,6 +64,19 @@ class ServiceCongratsByTagListView(ListView):
         context['tags'] = Tag.objects.filter(category=category)
         context['articles'] = Blog.objects.all()
         context['reviews'] = Review.objects.filter(category=category)
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        context['description'] = 'Выберите готовое музыкальное поздравление в подарок любимым. ' + \
+                                 category.name + ' ' + current_tag.name + ' Пришлем понравившийся ' \
+                                                                          'аудио привет в формате мр3 на Вашу ' \
+                                                                          'электронную почту. Поздравите лично ' \
+                                                                          'со 100% гарантией!'
+        context['url'] = self.request.build_absolute_uri((reverse('musprivet:congrat_list',
+                                                            kwargs={'tag_slug': self.kwargs.get('tag_slug')})))
+        if category.image == None:
+            context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
+        else:
+            image_url = category.image.url
+            context['image'] = self.request.build_absolute_uri(image_url)
         return context
 
 
@@ -80,12 +98,28 @@ class ServiceCongratsByTagDetailView(DetailView, FormMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        category_url = 'mus-pozdrav'
+        category = get_object_or_404(Category, slug=category_url)
         tag_slug = self.kwargs.get('tag_slug', None)
         current_tag = get_object_or_404(Tag, slug=tag_slug)
         context['current_tag'] = current_tag
         context['categories'] = Category.objects.all()
         context['form'] = self.get_form()
         context['price'] = ServiceAdClipPrice.objects.get(type='C')
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        context['description'] = 'Выберите готовое музыкальное поздравление в подарок любимым. ' + \
+                                 category.name + ' ' + current_tag.name + ' ' + self.object.title + ' Пришлем понравившийся ' \
+                                                                          'аудио привет в формате мр3 на Вашу ' \
+                                                                          'электронную почту. Поздравите лично ' \
+                                                                          'со 100% гарантией!'
+        context['url'] = self.request.build_absolute_uri(reverse('musprivet:congrat_detail',
+                                                                 kwargs={'tag_slug': self.kwargs.get('tag_slug'),
+                                                                         'congrat_slug': self.object.slug}))
+        if category.image == None:
+            context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
+        else:
+            image_url = category.image.url
+            context['image'] = self.request.build_absolute_uri(image_url)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -97,10 +131,35 @@ class ServiceCongratsByTagDetailView(DetailView, FormMixin):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        form.instance.service = self.object
-        form.instance.price = int(getattr(ServiceAdClipPrice.objects.get(type='C'), 'price'))
-        form.save()
-        return redirect(self.get_success_url())
+        amount = int(ServiceAdClipPrice.objects.get(type='C').price) *100
+        order_id = f'ORDER-{self.get_object().id}'
+        description = form.cleaned_data['congratulation']
+        email = form.cleaned_data['email']
+        phone = form.cleaned_data['phone']
+        key = settings.terminal_key
+
+        payment_data = {
+            'TerminalKey': key,
+            'Amount': amount,
+            'OrderId': order_id,
+            'Description': description,
+            'Email': email,
+            'Phone': phone,
+        }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.post('https://securepay.tinkoff.ru/v2/Init', json=payment_data, headers=headers)
+        try:
+            response_data = response.json()
+        except JSONDecodeError:
+            return HttpResponseNotFound()
+        if response.status_code == 200 and 'PaymentURL' in response_data:
+            payment_url = response_data['PaymentURL']
+            form.instance.service = self.object
+            form.instance.price = int(getattr(ServiceAdClipPrice.objects.get(type='C'), 'price'))
+            form.save()
+            return redirect(payment_url)
 
 
 class PoemByNameDetailView(DetailView, FormMixin):
@@ -130,6 +189,8 @@ class PoemByNameDetailView(DetailView, FormMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        category_url = 'mus-pozdrav'
+        category = get_object_or_404(Category, slug=category_url)
         tag_slug = self.kwargs.get('tag_slug', None)
         current_tag = get_object_or_404(Tag, slug=tag_slug)
         if self.get_object():
@@ -139,6 +200,27 @@ class PoemByNameDetailView(DetailView, FormMixin):
         context['categories'] = Category.objects.all()
         context['price'] = ServiceAdClipPrice.objects.get(type='C')
         context['form'] = self.get_form()
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        if self.object:
+            context['description'] = 'Выберите готовое музыкальное поздравление в подарок любимым. ' + \
+                                 category.name + ' ' + current_tag.name + ' ' + self.object.title + ' Пришлем понравившийся ' \
+                                                                          'аудио привет в формате мр3 на Вашу ' \
+                                                                          'электронную почту. Поздравите лично ' \
+                                                                          'со 100% гарантией!'
+        else:
+            context['description'] = 'Выберите готовое музыкальное поздравление в подарок любимым. ' + \
+                                 category.name + ' ' + current_tag.name + ' Пришлем понравившийся ' \
+                                                                          'аудио привет в формате мр3 на Вашу ' \
+                                                                          'электронную почту. Поздравите лично ' \
+                                                                          'со 100% гарантией!'
+        context['url'] = self.request.build_absolute_uri(reverse('musprivet:name_poem_detail',
+                                                                 kwargs={'tag_slug': self.kwargs.get('tag_slug'),
+                                                                         'name_slug': self.kwargs.get('name_slug')}))
+        if category.image == None:
+            context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
+        else:
+            image_url = category.image.url
+            context['image'] = self.request.build_absolute_uri(image_url)
 
         return context
 
@@ -150,9 +232,34 @@ class PoemByNameDetailView(DetailView, FormMixin):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        form.instance.price = int(getattr(ServiceAdClipPrice.objects.get(type='C'), 'price'))
-        form.save()
-        return redirect(self.get_success_url())
+        amount = int(ServiceAdClipPrice.objects.get(type='C').price) *100
+        order_id = f'ORDER-{form.cleaned_data["service"]}'
+        description = form.cleaned_data['congratulation']
+        email = form.cleaned_data['email']
+        phone = form.cleaned_data['phone']
+        key = settings.terminal_key
+
+        payment_data = {
+            'TerminalKey': key,
+            'Amount': amount,
+            'OrderId': order_id,
+            'Description': description,
+            'Email': email,
+            'Phone': phone,
+        }
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.post('https://securepay.tinkoff.ru/v2/Init', json=payment_data, headers=headers)
+        try:
+            response_data = response.json()
+        except JSONDecodeError:
+            return HttpResponseNotFound()
+        if response.status_code == 200 and 'PaymentURL' in response_data:
+            payment_url = response_data['PaymentURL']
+            form.instance.price = int(getattr(ServiceAdClipPrice.objects.get(type='C'), 'price'))
+            form.save()
+            return redirect(payment_url)
 
 
 class ServiceSongsListView(ListView, FormMixin):
@@ -174,9 +281,20 @@ class ServiceSongsListView(ListView, FormMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        category_url = 'podarit-pesnu'
+        category = get_object_or_404(Category, slug=category_url)
         context['video_songs'] = ServiceSongsVideo.objects.all()
         context['categories'] = Category.objects.all()
         context['form'] = self.get_form()
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        context['description'] = 'Песня в подарок любимой девушке, парню, родителям, мужу, жене. ' + \
+                                 category.name + ' 100% шлягеры!'
+        context['url'] = self.request.build_absolute_uri(reverse('musprivet:song_list'))
+        if category.image == None:
+            context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
+        else:
+            image_url = category.image.url
+            context['image'] = self.request.build_absolute_uri(image_url)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -239,12 +357,28 @@ class ServiceAdvertisementListView(ListView, FormMixin):
         if subcategory_slug:
             try:
                 subcategory = getattr(Subcategory.objects.get(slug=subcategory_slug), 'id')
+                subcategory_name = Subcategory.objects.get(slug=subcategory_slug)
                 context['tags'] = Tag.objects.filter(subcategory=subcategory)
+                if subcategory_name:
+                    context['description'] = 'Услуги для бизнеса: ' + category.name + ' ' + subcategory_name.name + \
+                                             ' Под ключ с адаптацией в любой хронометраж за 5 дней!'
+                else:
+                    context['description'] = 'Услуги для бизнеса: ' + category.name + ' ' + ' Под ключ с адаптацией в ' \
+                                                                                            'любой хронометраж за 5 дней!'
             except Subcategory.DoesNotExist:
                 HttpResponseNotFound()
         else:
             context['tags'] = Tag.objects.filter(category=category)
         context['form'] = self.get_form_class()
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        context['url'] = self.request.build_absolute_uri(reverse('musprivet:ads_list',
+                                                                 kwargs={'subcategory_slug':
+                                                                             self.kwargs.get('subcategory_slug')}))
+        if category.image == None:
+            context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
+        else:
+            image_url = category.image.url
+            context['image'] = self.request.build_absolute_uri(image_url)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -266,8 +400,19 @@ class AdvertisementView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        category_url = 'audioreklama'
+        category = get_object_or_404(Category, slug=category_url)
         context['categories'] = Category.objects.all()
         context['subcategories'] = Subcategory.objects.all()
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        context['url'] = self.request.build_absolute_uri(reverse('musprivet:audioreklama'))
+        context['description'] = 'Услуги для бизнеса: ' + category.name + ' ' + ' Под ключ с адаптацией в ' \
+                                                                                'любой хронометраж за 5 дней!'
+        if category.image == None:
+            context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
+        else:
+            image_url = category.image.url
+            context['image'] = self.request.build_absolute_uri(image_url)
         return context
 
 
@@ -278,6 +423,12 @@ class AboutUsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['subcategories'] = Subcategory.objects.all()
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        context['url'] = self.request.build_absolute_uri(reverse('musprivet:about_us'))
+        context['description'] = 'Продюсерский центр «Музпривет» — творческое содружество композиторов, ' \
+                                 'авторов текстов, исполнителей, актёров, режиссёров и продюсеров, работающих ' \
+                                 'в сферах рекламы, радио, телевидения и кинематографе.'
+        context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
         return context
 
 
@@ -288,6 +439,10 @@ class UserManualView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['subcategories'] = Subcategory.objects.all()
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        context['url'] = self.request.build_absolute_uri(reverse('musprivet:user_manual'))
+        context['description'] = 'Договор на оказание услуг (публичная оферта)'
+        context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
         return context
 
 
@@ -298,6 +453,10 @@ class RefundView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['subcategories'] = Subcategory.objects.all()
+        context['title'] = 'Готовые музыкальные поздравления и песни на заказ в подарок для ваших любимых от Музпривет.'
+        context['url'] = self.request.build_absolute_uri(reverse('musprivet:refund'))
+        context['description'] = 'Способы оплаты и правила возврата денежных средств'
+        context['image'] = self.request.build_absolute_uri(static('img/mainicon.png'))
         return context
 
 

@@ -16,7 +16,7 @@
                         <h3 class="blog__item-title">{{ article.title }}</h3>
                         <img class="blog__item-img" src="{{ article.image_field.url }}" alt="blog">
                         <p class="blog__item-descr">
-                            {{ article.text }}
+                            {{ article.text|safe }}
                         </p>
                     </div>
                     </li>

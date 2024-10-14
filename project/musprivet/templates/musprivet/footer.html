@@ -2,7 +2,7 @@
 
 <div class="container footer__container row">
       <div class="footer__left col-12 col-lg-3">
-        <a class="footer__logo" href="/mus-pozdrav/">
+        <a class="footer__logo" href="{% url 'musprivet:congrat_list_default' %}">
           <img class="footer__img" src="{% static 'img/mainicon.png' %}" alt="mainicon">
         </a>
         <ul class="list-reset">
@@ -41,7 +41,7 @@
                 {% endfor %}
             {% endif %}
                     <li class="footer__list-item">
-                        <a class="footer__link" href="/about-us/">О нас</a>
+                        <a class="footer__link" href="{% url 'musprivet:about_us' %}">О нас</a>
                     </li>
             </ul>
         </div>
@@ -52,12 +52,12 @@
           </h3>
           <ul class="list-reset">
             <li class="footer__list-item">
-              <a class="footer__link" href="/user-manual/">
+              <a class="footer__link" href="{% url 'musprivet:user_manual' %}">
                 Пользовательское соглашение
               </a>
             </li>
             <li class="footer__list-item">
-              <a class="footer__link" href="/refund/">
+              <a class="footer__link" href="{% url 'musprivet:refund' %}">
                 Способы оплаты и правила возврата денежных средств
               </a>
             </li>

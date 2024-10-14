@@ -6,7 +6,7 @@ from .models import Category, Subcategory, Tag, ServiceCongratsByName, ServiceCo
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug')
+    list_display = ('id', 'name', 'slug', 'image')
     search_fields = ('name',)
 
 @admin.register(Subcategory)
@@ -50,7 +50,7 @@ class ServiceSongsAdmin(admin.ModelAdmin):
 
 @admin.register(ServiceSongsVideo)
 class ServiceSongsVideoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'description', 'category', 'video_url')
+    list_display = ('id', 'title', 'description', 'category', 'video_url', 'type')
     search_fields = ('title',)
 
 @admin.register(SongRequest)

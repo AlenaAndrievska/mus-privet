@@ -16,7 +16,6 @@
       {% if name_poem %}
         <h1 class="zakaz__main-title">
           {{ name_poem.title }}
-                    {{ price }}
         </h1>
 
         <div class="row">
@@ -42,7 +41,7 @@
           <div class="col-12 col-lg-6">
             <h2 class="zakaz__second-title">Отправьте {{ current_tag.name }} {{ name_poem.name }} этот музпривет!</h2>
             <p class="zakaz__price">Стоимость музпривета - <b>{{ price.price }} ₽</b></p>
-              <form class="zakaz__form" action="/mus-pozdrav/{{ current_tag.slug }}/name/{{ name_poem.name.slug }}" method="post">
+              <form class="zakaz__form" method="post">
                   {% csrf_token %}
               <ul class="list-reset row zakaz__form-list">
                 <li class="col-12 col-md-6 flex flex-column">
@@ -66,11 +65,14 @@
                 </li>
               </ul>
               <button type="submit" class="btn zakaz__form-link">Оплатить</button>
+              <p class="zakaz__form_descr">После оплаты на указанную Вами почту почту придёт музыкальное поздравление в формате mp3.</p>
             </form>
-
           </div>
         </div>
-        {% endif %}
+      {% else %}
+          {% include "musprivet/404.html" %}
+
+      {% endif %}
       </section>
     </div>
 

@@ -16,20 +16,18 @@
                 <p class="examples__2text">
                     {{ video_song.description }}
                 </p>
-                  <!--<div class="thumb-wrap examples__video_vertical">
+                {% if video_song.type == v %}
+                  <div class="thumb-wrap examples__video_vertical">
                     <iframe src="{{ video_song.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                  </div>-->
-                  <video class="examples__video examples__video_vertical" playsinline controls = "true" preload="metadata"
-                        poster="video/podari-pesnu_video3-1.png">
-                    <source src="video/podari-pesnu_video3.webm" type="video/WebM">
-                    <source src="video/podari-pesnu_video3.mp4" type="video/mp4">
-                    <p>Ваш браузер не поддерживает встроенные видео.</p>
-                  </video>
-                  {% if video_song.id == 1 %}
+                  </div>
                     <p class="examples__1text">
                         Хотите подарить любимому человеку такие&nbsp;же эмоции? Мы&nbsp;ждём вашу заявку в&nbsp;любое время!
                     </p>
-                  {% endif %}
+                {% else %}
+                  <div class="thumb-wrap">
+                    <iframe src="{{ video_song.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                  </div>
+                {% endif %}
                   <a class="podaripesnu__link podaripesnu__link_1" href="#present-song">Подарить песню</a>
               {% endfor %}
           {% endif %}
@@ -48,7 +46,7 @@
                      </h4>
                      <div class="examples__audio-container flex">
                          <div class="examples__audio-album">
-                             <!--Тут нужно добавить тег img для добавления картинки для песни-->
+                            <img src="{{ song.image_field.url }}" alt="for-friend">
                          </div>
                          <audio controls="controls" class="examples__audio custom-audio" preload="metadata"
                             controlslist="nodownload" autostart="false" src="{{ song.audio_file.url }}"></audio>

@@ -1,0 +1,13 @@
+# Environments
+
+.env
+my_venv/
+
+# Jetbrains Intellij IDEA
+.idea/
+
+
+db.sqlite3
+project/musprivet/__pycache__/
+project/project/__pycache__/
+__pycache__

@@ -1311,13 +1311,20 @@ audio::-webkit-media-controls-panel {
   width: 100%;
   margin-right: 10px;
   border-radius: 5px;
-  background-image: url(../img/podari-pesnu_for-friend.jpeg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  overflow: hidden;
+  /* background-image: url(../img/podari-pesnu_for-friend.jpeg); */
+  /* background-position: center; */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
 }
 
-.examples__audio-album_for-friend {
+.examples__audio-album img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* .examples__audio-album_for-friend {
   background-image: url(../img/podari-pesnu_for-friend.jpeg);
 }
 
@@ -1339,7 +1346,7 @@ audio::-webkit-media-controls-panel {
 
 .examples__audio-album_christmas {
   background-image: url(../img/podari-pesnu-christmas.jpg);
-}
+} */
 
 /* AUDIO  */
 .examples__audio {
@@ -1971,6 +1978,7 @@ audio::-webkit-media-controls-panel {
 }
 
 .price__chrono {
+  min-height: 20.4px;
   margin-bottom: 20px;
   font-size: 17px;
   text-align: center;
@@ -1981,6 +1989,7 @@ audio::-webkit-media-controls-panel {
 }
 
 .price__details {
+  min-height: 42.6px;
   padding: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   font-size: 18px;
@@ -2537,6 +2546,7 @@ audio::-webkit-media-controls-panel {
   display: block;
   width: 100%;
   padding: 10px 15px;
+  margin-bottom: 18px;
   border-radius: 5px;
   background-color: var(--yellow);
   font-size: 18px;
@@ -2551,4 +2561,20 @@ audio::-webkit-media-controls-panel {
 
 .zakaz__form-link:hover:not(:active) {
   background-color: var(--lessyellow);
+}
+
+.zakaz__form_descr  {
+  font-size: 18px;
+  color: var(--textcolor);
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+}
+.error__title {
+  text-align: center;
+  font-size: 50px;
 }

@@ -30,7 +30,7 @@
                             <ul class="list-reset price__list">
                                 {% for line in price.description|split_lines %}
                                     <li class="price__details">
-                                        {{ line }}
+                                        {{ line|safe }}
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -55,7 +55,7 @@
                     <li class="col-12 col-md-6 col-lg-4">
                         <div class="price-container">
                             <p class="price__type">
-                                {{ price.title }}
+                                {{ price.title|safe }}
                             </p>
                             <p class="price__minimum">
                                 <sub>от</sub>&nbsp;{{ price.price }}&nbsp;₽

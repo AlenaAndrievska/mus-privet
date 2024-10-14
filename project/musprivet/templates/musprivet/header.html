@@ -20,11 +20,14 @@
                 {% endfor %}
             {% endif %}
           <li>
+              <a href="{% url 'musprivet:about_us' %}" class="menu-item">О&nbsp;нас</a>
+          </li>
+          <li>
             <a class="menu-item header__btn-link_burger" href="https://t.me/muzprivet">Muzprivet</a>
           </li>
         </ul>
       </div>
-      <a class="header__logo" href="/mus-pozdrav/"><img class="header__logo-img" src="{% static 'img/mainicon.png' %}" alt="icon"></a>
+      <a class="header__logo" href="{% url 'musprivet:congrat_list_default' %}"><img class="header__logo-img" src="{% static 'img/mainicon.png' %}" alt="icon"></a>
       <nav class="nav">
         {% if categories %}
           <ul class="list-reset nav__list flex">
@@ -48,7 +51,7 @@
             {% endfor %}
           {% endif %}
               <li>
-                  <a class="nav__link" href='/about-us/'>О&nbsp;нас</a>
+                  <a class="nav__link" href='{% url 'musprivet:about_us' %}'>О&nbsp;нас</a>
               </li>
             </ul>
       </nav>
