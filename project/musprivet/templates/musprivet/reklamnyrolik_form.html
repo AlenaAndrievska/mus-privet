@@ -35,19 +35,19 @@
                     <label class="make-order__form-label" for="make-order__form-option">Услуга</label>
                     <select class="make-order__form-select" name="service" id="make-order__form-option">
                         {% for service in rolik_prices %}
-                            <option selected value="{{ service.id }}">{{ service.title }}</option>
+                            <option selected value="{{ service.id }}">{{ service.title|safe }}</option>
                         {% endfor %}
                         {% for service in script_prices %}
-                            <option selected value="{{ service.id }}">{{ service.title }}</option>
+                            <option selected value="{{ service.id }}">{{ service.title|safe }}</option>
                         {% endfor %}
                     </select>
                   </li>
                   <li class="col-12 flex flex-column">
                     <label class="make-order__form-label" for="make-order__form-chrono">Хронометраж</label>
                     <select class="make-order__form-select" name="timing" id="make-order__form-chrono">
-                      <option value="30sec" selected>30 секунд</option>
-                      <option value="20sec">20 секунд</option>
-                      <option value="15sec">15 секунд</option>
+                      <option value="30 секунд" selected>30 секунд</option>
+                      <option value="20 секунд">20 секунд</option>
+                      <option value="15 секунд">15 секунд</option>
                     </select>
                   </li>
                   <li class="col-12 flex flex-column">

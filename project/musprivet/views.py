@@ -1,6 +1,7 @@
 from json import JSONDecodeError
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail, EmailMessage
 from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
@@ -305,6 +306,15 @@ class ServiceSongsListView(ListView, FormMixin):
             return self.form_invalid(form)
 
     def form_valid(self, form):
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        phone = form.cleaned_data['phone']
+        message = form.cleaned_data['message']
+
+        email_subject = f'Получена новая заявка на песню от {name}'
+        email_message = f'Имя: {name}\nТелефон: {phone}\nEmail: {email}\n\nСообщение:\n{message}'
+
+        send_mail(email_subject, email_message, settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL])
         form.save()
         return redirect(self.get_success_url())
 
@@ -384,13 +394,38 @@ class ServiceAdvertisementListView(ListView, FormMixin):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         if form_class:
-            form = form_class(request.POST)
+            form = form_class(request.POST, request.FILES)
             if form.is_valid():
                 return self.form_valid(form)
             else:
                 return self.form_invalid(form)
 
     def form_valid(self, form):
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        phone = form.cleaned_data['phone']
+        service = form.cleaned_data['service']
+        audio_file = self.request.FILES['audio_file']
+        subcategory_slug = self.kwargs.get('subcategory_slug', None)
+        if subcategory_slug == 'reklamnyj-rolik':
+            timing = form.cleaned_data['timing']
+            email_subject = f'Получена новая заявка на услугу аудиорекламы от {name}'
+            email_message = f'Имя: {name}\nТелефон: {phone}\nEmail: {email}\nУслуга: \n{service}' \
+                        f'\nХронометраж: \n{timing}\nФайл: \n{audio_file}'
+        else:
+            email_subject = f'Получена новая заявка на услугу аудиорекламы от {name}'
+            email_message = f'Имя: {name}\nТелефон: {phone}\nEmail: {email}\nУслуга: \n{service}\nФайл: \n{audio_file}'
+
+        email = EmailMessage(
+            subject=email_subject,
+            body=email_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[settings.DEFAULT_FROM_EMAIL],
+        )
+
+        email.attach(audio_file.name, audio_file.read(), audio_file.content_type)
+
+        email.send()
         form.save()
         return redirect(self.get_success_url())
 

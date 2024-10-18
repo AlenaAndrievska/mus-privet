@@ -134,3 +134,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# SMTP
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'no-reply@lacumparsita.ru'
+EMAIL_HOST_PASSWORD = '8JjM9i5jiphkFbuhJCnA'
+DEFAULT_FROM_EMAIL = 'no-reply@lacumparsita.ru'
