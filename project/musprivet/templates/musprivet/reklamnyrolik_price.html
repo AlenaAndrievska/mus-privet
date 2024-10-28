@@ -10,30 +10,32 @@
             </h2>
             <ul class="list-reset justify-content-center price__main-list row">
                 {% for price in rolik_prices %}
-                    <li class="col-12 col-md-6 col-lg-4">
-                        <div class="price-container">
-                            <p class="price__type">
-                                {{ price.title }}
-                            </p>
-                            <p class="price__minimum">
-                                <sub>от</sub>&nbsp;{{ price.price }}&nbsp;₽
-                            </p>
-                            {% if price.timing %}
-                                <p class="price__chrono">
-                                    Базовый хронометраж {{ price.timing }}
+                    <li class="col-12 col-md-6 col-lg-4 flex">
+                        <div class="price-container flex flex-column justify-content-between">
+                            <div>
+                                <p class="price__type">
+                                    {{ price.title }}
                                 </p>
-                            {% else %}
-                                <p class="price__chrono">
-                                    <br>
+                                <p class="price__minimum">
+                                    <sub>от</sub>&nbsp;{{ price.price }}&nbsp;₽
                                 </p>
-                            {% endif %}
-                            <ul class="list-reset price__list">
-                                {% for line in price.description|split_lines %}
-                                    <li class="price__details">
-                                        {{ line|safe }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                                {% if price.timing %}
+                                    <p class="price__chrono">
+                                        Базовый хронометраж {{ price.timing }}
+                                    </p>
+                                {% else %}
+                                    <p class="price__chrono">
+                                        <br>
+                                    </p>
+                                {% endif %}
+                                <ul class="list-reset price__list">
+                                    {% for line in price.description|split_lines %}
+                                        <li class="price__details">
+                                            {{ line }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                             <div class="price__link-container">
                                 <a class="price__link" href="#make-order">Заказать</a>
                             </div>
@@ -52,26 +54,28 @@
               </p>
               <ul class="list-reset row justify-content-center price__second-list">
                 {% for price in script_prices %}
-                    <li class="col-12 col-md-6 col-lg-4">
-                        <div class="price-container">
-                            <p class="price__type">
-                                {{ price.title|safe }}
-                            </p>
-                            <p class="price__minimum">
-                                <sub>от</sub>&nbsp;{{ price.price }}&nbsp;₽
-                            </p>
-                            <p class="price__prepay">
-                                {{ price.description }}
-                            </p>
-                            {% if price.timing %}
-                                <p class="price__chrono">
-                                    Базовый хронометраж {{ price.timing }}
+                    <li class="col-12 col-md-6 col-lg-4 flex">
+                        <div class="price-container flex flex-column justify-content-between">
+                            <div>
+                                <p class="price__type">
+                                    {{ price.title }}
                                 </p>
-                            {% else %}
-                                <p class="price__chrono">
-                                    <br>
+                                <p class="price__minimum">
+                                    <sub>от</sub>&nbsp;{{ price.price }}&nbsp;₽
                                 </p>
-                            {% endif %}
+                                <p class="price__prepay">
+                                    {{ price.description }}
+                                </p>
+                                {% if price.timing %}
+                                    <p class="price__chrono">
+                                        Базовый хронометраж {{ price.timing }}
+                                    </p>
+                                {% else %}
+                                    <p class="price__chrono">
+                                        <br>
+                                    </p>
+                                {% endif %}
+                            </div>
                             <div class="price__link-container">
                                 <a class="price__link" href="#make-order">Заказать</a>
                             </div>

@@ -1312,10 +1312,6 @@ audio::-webkit-media-controls-panel {
   margin-right: 10px;
   border-radius: 5px;
   overflow: hidden;
-  /* background-image: url(../img/podari-pesnu_for-friend.jpeg); */
-  /* background-position: center; */
-  /* background-repeat: no-repeat; */
-  /* background-size: cover; */
 }
 
 .examples__audio-album img {
@@ -1324,29 +1320,6 @@ audio::-webkit-media-controls-panel {
   object-fit: cover;
 }
 
-/* .examples__audio-album_for-friend {
-  background-image: url(../img/podari-pesnu_for-friend.jpeg);
-}
-
-.examples__audio-album_lenochke {
-  background-image: url(../img/bossanova.jpeg);
-}
-
-.examples__audio-album_to-son {
-  background-image: url(../img/podari-pesnu-to-son.jpg);
-}
-
-.examples__audio-album_kumparsita {
-  background-image: url(../img/podari-pesnu-kumparsita.jpg);
-}
-
-.examples__audio-album_poezda {
-  background-image: url(../img/podari-pesnu-poezda.jpg);
-}
-
-.examples__audio-album_christmas {
-  background-image: url(../img/podari-pesnu-christmas.jpg);
-} */
 
 /* AUDIO  */
 .examples__audio {
@@ -1989,7 +1962,7 @@ audio::-webkit-media-controls-panel {
 }
 
 .price__details {
-  min-height: 42.6px;
+  /* min-height: 42.6px;SS */
   padding: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   font-size: 18px;
