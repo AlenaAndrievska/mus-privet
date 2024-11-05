@@ -17,16 +17,22 @@
                     {{ video_song.description }}
                 </p>
                 {% if video_song.type == v %}
-                  <div class="thumb-wrap examples__video_vertical">
-                    <iframe src="{{ video_song.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                  </div>
+                  <video class="examples__video examples__video_vertical" playsinline controls = "true" preload="metadata"
+                        poster="{{ video_song.image_field.url }}">
+                    <source src="{{ video_song.video_webm.url }}" type="video/WebM">
+                    <source src="{{ video_song.video_mp4.url }}" type="video/mp4">
+                    <p>Ваш браузер не поддерживает встроенные видео.</p>
+                  </video>
                     <p class="examples__1text">
                         Хотите подарить любимому человеку такие&nbsp;же эмоции? Мы&nbsp;ждём вашу заявку в&nbsp;любое время!
                     </p>
                 {% else %}
-                  <div class="thumb-wrap">
-                    <iframe src="{{ video_song.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                  </div>
+                  <video class="examples__video" playsinline controls = "true" preload="metadata"
+                        poster="{{ video_song.image_field.url }}">
+                    <source src="{{ video_song.video_webm.url }}" type="video/WebM">
+                    <source src="{{ video_song.video_mp4.url }}" type="video/mp4">
+                    <p>Ваш браузер не поддерживает встроенные видео.</p>
+                  </video>
                 {% endif %}
                   <a class="podaripesnu__link podaripesnu__link_1" href="#present-song">Подарить песню</a>
               {% endfor %}

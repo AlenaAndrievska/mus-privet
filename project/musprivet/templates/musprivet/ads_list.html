@@ -88,9 +88,12 @@
                                 {% endif %}
                             </div>
                             <div class="col-12 col-xl-7 align-self-center">
-                                <div class="thumb-wrap">
-                                    <iframe src="{{ video_ad.video_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                                </div>
+                                <video class="audioreklama-video-container" preload="metadata"
+                                    poster="{{ video_ad.image_field.url }}" controls>
+                                    <source src="{{ video_ad.video_mp4.url }}" type="video/mp4">
+                                    <source src="{{ video_ad.video_webm.url }}" type="video/WebM">
+                                    <p>Ваш браузер не поддерживает встроенные видео.</p>
+                                </video>
                             </div>
                         </div>
                     </div>

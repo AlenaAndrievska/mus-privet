@@ -50,7 +50,7 @@ class ServiceSongsAdmin(admin.ModelAdmin):
 
 @admin.register(ServiceSongsVideo)
 class ServiceSongsVideoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'description', 'category', 'video_url', 'type')
+    list_display = ('id', 'title', 'description', 'category', 'type', 'video_mp4', 'video_webm', 'image_field')
     search_fields = ('title',)
 
 @admin.register(SongRequest)
@@ -65,7 +65,7 @@ class ServiceAdvertisementAdmin(admin.ModelAdmin):
 
 @admin.register(ServiceVideoAdvertisement)
 class ServiceVideoAdvertisementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'description', 'tag', 'video_url')
+    list_display = ('id', 'title', 'description', 'tag', 'video_mp4', 'video_webm', 'image_field')
     search_fields = ('title',)
 
 @admin.register(Review)

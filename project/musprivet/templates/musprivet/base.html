@@ -26,6 +26,20 @@
 </head>
 <body class="body">
 <a href="#top" id="back-to-top" class="back-to-top" title="Back to top"></a>
+<!-- Сквозное видео -->
+<div class="ritual ritual_hover">
+    <div class="ritual__container">
+      <div class="ritual__controls">
+        <span class="ritual__close"></span>
+        <span class="ritual__mute"></span>
+      </div>
+      <video class="ritual__video" muted autoplay playsinline loop preload="metadata" poster="{% static 'img/ritual-pre.png' %}">
+        <source src="{% static 'img/ritual.mp4' %}" type="video/mp4">
+        <source src="{% static 'img/ritual.webm' %}" type="video/WebM">
+        <p>Ваш браузер не поддерживает встроенные видео.</p>
+      </video>
+    </div>
+</div>
 <header class="header">
         {% include "musprivet/header.html" %}
 </header>

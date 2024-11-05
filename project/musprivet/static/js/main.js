@@ -249,12 +249,86 @@ allAudio.forEach((e) => {
     );
   });
 
+// Функции для сквозного видео RITUAL
+const ritual = document.querySelector('.ritual');
+const ritualVideo = document.querySelector('.ritual__video');
+const ritualClose = document.querySelector('.ritual__close');
+const ritualMute = document.querySelector('.ritual__mute');
+const ritualControls = document.querySelector('.ritual__controls');
+let initialWidth = '130px';
+let popedWidth = '300px';
+
+ritual.addEventListener('click', (e) => {
+  if (e.target === ritualClose || e.target ===ritualMute) {
+    return
+  }
+  ritual.classList.remove('ritual_hover');
+  if (ritualVideo.muted) {
+  ritualVideo.currentTime = 0;}
+  if (!ritualVideo.paused && ritual.style.maxWidth === popedWidth) {
+    ritualVideo.pause();
+  }
+  else ritualVideo.play();
+  ritual.style.maxWidth = popedWidth;
+  ritualVideo.muted = false;
+})
+
+ritualClose.addEventListener('click', () => {
+  if (ritual.classList.contains('ritual_hover') || ritual.style.maxWidth === initialWidth) {
+    ritual.remove()
+  }
+  ritual.style.maxWidth = initialWidth;
+  ritualVideo.muted = true;
+})
+
+
+ritualMute.addEventListener('click', () => {
+  if (!ritualVideo.muted) {
+  ritualVideo.muted = true;
+  ritualMute.classList.add('ritual__unmute')}
+  else {
+    ritualVideo.muted = false;
+    ritualMute.classList.remove('ritual__unmute')
+};
+})
+
+// Функция для внезапного сообщения с боку
+const sideMessage = document.getElementById('side-message')
+const sideMessageDescr = document.getElementById('side-message__descr')
+
+if (getLocal('sideMessages') === null) {
+  setTimeout(() => {
+    setLocal(1, 'sideMessages')
+  }, 1000)}
+if (getLocal('sideMessages') === 1) {
+  sideMessageDescr.textContent = 'Александр из Москвы только что отправил поздравление девушке Арине!';
+  sideMessage.style.animationDelay = '10s';
+  setTimeout(()=>{
+    setLocal(2, 'sideMessages');
+  }, 1000)
+}
+if (getLocal('sideMessages') === 2) {
+  sideMessageDescr.textContent = 'Михаил из Екатеринбурга только что отправил поздравление подруге Милене!';
+  sideMessage.style.animationDelay = '20s';
+  setTimeout(()=>{
+    setLocal(3, 'sideMessages');
+  }, 1000)
+}
+
+if (getLocal('sideMessages') === 3) {
+  sideMessage.remove()
+}
 
 
 
+// работа с LocalStorage
+// Фукнция записи дела в localStorage
+function setLocal(inData, listName) {
+  localStorage.setItem(listName, JSON.stringify(inData))
+}
 
-
-
-
-
+// Функция для возврата данных из localStorage
+function getLocal(listName) {
+  return JSON.parse(localStorage.getItem(listName));
+}
 

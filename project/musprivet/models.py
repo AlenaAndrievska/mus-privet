@@ -193,7 +193,9 @@ class ServiceSongsVideo(models.Model):
     category = models.ForeignKey(Category, related_name='services_video_songs', on_delete=models.CASCADE,
                                  verbose_name='категория')
     type = models.CharField(max_length=1, choices=TYPE_CHOICES, blank=True, null=True, verbose_name='выберите тип видео')
-    video_url = models.URLField(blank=True, null=True, verbose_name='ссылка на видео')
+    video_mp4 = models.FileField(upload_to='video/', blank=True, null=True, verbose_name='видео mp4')
+    video_webm = models.FileField(upload_to='video/', blank=True, null=True, verbose_name='видео webM')
+    image_field = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='обложка')
 
     class Meta:
         db_table = 'video song'
@@ -244,7 +246,9 @@ class ServiceVideoAdvertisement(models.Model):
     title = models.CharField(max_length=255, verbose_name='название')
     description = models.TextField(null=True, blank=True, verbose_name='описание (опционально)')
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='тег')
-    video_url = models.URLField(null=True, blank=True, verbose_name='ссылка на видео')
+    video_mp4 = models.FileField(upload_to='video/', blank=True, null=True, verbose_name='видео mp4')
+    video_webm = models.FileField(upload_to='video/', blank=True, null=True, verbose_name='видео webM')
+    image_field = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='обложка')
 
     class Meta:
         db_table = 'video-advertisement'
