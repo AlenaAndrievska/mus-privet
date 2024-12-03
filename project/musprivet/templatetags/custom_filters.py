@@ -31,3 +31,7 @@ def split_paragraphs(value):
 @register.filter
 def split_lines(value):
     return value.splitlines()
+
+@register.filter
+def remove_greeting(value):
+    return value.replace('Поздравление ', '')

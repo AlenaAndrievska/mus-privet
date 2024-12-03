@@ -4,7 +4,17 @@ navSecondLevel.addEventListener('mouseover', () => {
   document.querySelector('.nav__list-2level').classList.toggle('hidden');
 })
 
-
+// Функция для добавления стилей ссылкам папе, маме, жене, мужу и т.д. на главной странице
+const colorsArray = ['ready-variants__link_green', 'ready-variants__link_red', 'ready-variants__link_verygreen', 'ready-variants__link_yellow', 'ready-variants__link_siren', 'ready-variants__link_puppy', 'ready-variants__link_softblue', 'ready-variants__link_browny', 'ready-variants__link_blue', 'ready-variants__link_strongyellow', 'ready-variants__link_orange', 'ready-variants__link_chery'];
+const readyVariantsLink = Array.from(document.querySelectorAll('.ready-variants__link'));
+readyVariantsLink.forEach((a)=> {
+  a.classList.remove('ready-variants__link_siren');
+})
+for (let i = 0; i < readyVariantsLink.length; i++) {
+if (colorsArray[i] === undefined) {colorsArray[i] = colorsArray[i-1];
+}
+  readyVariantsLink[i].classList.add(colorsArray[i]);
+}
 
 // СТРЕЛОЧКА НАВЕРХ
 document.addEventListener("DOMContentLoaded", function () {

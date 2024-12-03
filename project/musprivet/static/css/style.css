@@ -834,7 +834,8 @@ audio::-webkit-media-controls-panel {
 }
 
 .ready-variants__link:hover {
-  opacity: 0.9;
+  opacity: 0.7;
+  box-shadow: 0 0 3px burlywood;
 }
 
 /* Активная вкладка  */
@@ -2465,6 +2466,7 @@ audio::-webkit-media-controls-panel {
 
 .zakaz__form-list {
   row-gap: 18px;
+  margin-bottom: 20px;
 }
 
 /* Замена gutter  */

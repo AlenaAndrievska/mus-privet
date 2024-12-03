@@ -39,7 +39,7 @@
                 </ul>
           </div>
           <div class="col-12 col-lg-6">
-            <h2 class="zakaz__second-title">Отправьте {{ current_tag.name }} {{ name_poem.name }} этот музпривет!</h2>
+            <h2 class="zakaz__second-title">Отправьте {{ current_tag.name|remove_greeting }} {{ name_poem.name }} этот музпривет!</h2>
             <p class="zakaz__price">Стоимость музпривета - <b>{{ price.price }} ₽</b></p>
               <form class="zakaz__form" method="post">
                   {% csrf_token %}
@@ -51,17 +51,12 @@
                   <input required class="zakaz__form-input" id="zakaz__form-mail" name="email" type="email" placeholder="Ваша почта">
                 </li>
                 <li class="col-12 flex flex-column">
-                  <select class="zakaz__form-select" id="zakaz__form-select" name="service" required>
+                  <select required class="zakaz__form-select" name="zakaz__form-select" id="zakaz__form-select">
+                    <option disabled selected value="">Выберите поздравление</option>
                     {% for service in name_congrats %}
                         <option value="{{ service.id }}">{{ service.title }}</option>
                     {% endfor %}
                   </select>
-                </li>
-                <li class="col-12">
-                  <input class="zakaz__form-input  zakaz__form-select_checked" id="zakaz__form-add-own-congr"
-                    type="checkbox" name="add_congratulation">
-                  <label tabindex="0" class="zakaz__form-label zakaz__form-label_styled" for="zakaz__form-add-own-congr">Добавить личное поздравление:</label>
-                  <textarea class="zakaz__form-textarea" id="zakaz__form-message" name="congratulation" placeholder="Напишите ваше личное поздравление. Например, Алексей поздравляет любимую жену Валерию. Ваш текст, озвученный голосом, прозвучит сразу&nbsp;же после музпривета."></textarea>
                 </li>
               </ul>
               <button type="submit" class="btn zakaz__form-link">Оплатить</button>
