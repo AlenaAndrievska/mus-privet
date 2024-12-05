@@ -60,7 +60,7 @@
   .make-order__item:not(:last-child) {
     margin-bottom: 30px;
   }
-  .error__title 
+  .error__title
   {font-size: 40px;}
 }
 
@@ -173,7 +173,7 @@
     line-height: 1.2;
   }
   .abc-list {
-    max-height: 1200px;
+    max-height: 1440px;
   }
   /* .audioreklama  */
   .audioreklama-video__title {
@@ -343,7 +343,7 @@
     margin-right: 10px;
   }
   .abc-list {
-    max-height: 1880px;
+    max-height: 2200px;
   }
   .ready-variants__main-title {
     margin-bottom: 30px;
@@ -409,6 +409,6 @@
   .error {
     padding: 40px 0;
   }
-  .error__title 
+  .error__title
   {font-size: 32px;}
 }

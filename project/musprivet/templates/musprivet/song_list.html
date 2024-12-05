@@ -16,7 +16,7 @@
                 <p class="examples__2text">
                     {{ video_song.description }}
                 </p>
-                {% if video_song.type == v %}
+                {% if video_song.type == 'V' %}
                   <video class="examples__video examples__video_vertical" playsinline controls = "true" preload="metadata"
                         poster="{{ video_song.image_field.url }}">
                     <source src="{{ video_song.video_webm.url }}" type="video/WebM">

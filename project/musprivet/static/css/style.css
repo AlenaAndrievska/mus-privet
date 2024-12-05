@@ -952,7 +952,7 @@ audio::-webkit-media-controls-panel {
 }
 
 .abc-list {
-  max-height: 800px;
+  max-height: 1200px;
   flex-wrap: wrap;
   margin-bottom: 30px;
 }
