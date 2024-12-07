@@ -10,12 +10,14 @@
             {% if categories %}
                 {% for category in categories %}
                     <li>
-                        <a href="/{{ category.slug }}" class="menu-item menu-item_active">{{ category.name }}</a>
+                        <a href="/{{ category.slug }}" class="menu-item">{{ category.name }}</a>
                     </li>
                     {% if category.subcategory.all.count > 0 %}
-                        <li>
-                            <a href="/{{ category.slug }}/{{ subcategory.slug }}" class="menu-item menu-item_active">{{ subcategory.name }}</a>
-                        </li>
+                        {% for subcategory in category.subcategory.all %}
+                            <li>
+                                <a href="/{{ category.slug }}/{{ subcategory.slug }}" class="menu-item">{{ subcategory.name }}</a>
+                            </li>
+                        {% endfor %}
                     {% endif %}
                 {% endfor %}
             {% endif %}
