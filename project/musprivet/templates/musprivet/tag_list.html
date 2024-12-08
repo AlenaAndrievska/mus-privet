@@ -4,11 +4,19 @@
           {% if tags %}
             <ul class="list-reset ready-variants__list flex">
                 {% for tag in tags %}
+                    {% if tag.slug == current_tag.slug %}
                         <li class="ready-variants__list-item">
-                            <a class="ready-variants__link  ready-variants__link_active ready-variants__link_siren" href="/mus-pozdrav/{{ tag.slug }}">
+                            <a class="ready-variants__link ready-variants__link_active" href="/mus-pozdrav/{{ tag.slug }}">
                                 {{ tag.name }}
                             </a>
                         </li>
+                    {% else %}
+                        <li class="ready-variants__list-item">
+                            <a class="ready-variants__link" href="/mus-pozdrav/{{ tag.slug }}">
+                                {{ tag.name }}
+                            </a>
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
           {% endif %}
